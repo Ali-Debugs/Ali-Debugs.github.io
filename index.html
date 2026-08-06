@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Ali Jabbar, Software Engineer, AI Systems Engineer, and Full-Stack Engineer building LLM pipelines, agentic tooling with MCP, generative AI features, and production ready machine learning systems. Based in Lahore, Pakistan.">
+<meta name="keywords" content="Ali Jabbar, Software Engineer, AI Systems Engineer, Full-Stack Engineer, Machine Learning Engineer, Generative AI, LLM, RAG, Agentic AI, Model Context Protocol, MCP, Python Developer, Computer Science Graduate, Lahore Pakistan">
+<meta name="author" content="Ali Jabbar">
+<title>Ali Jabbar | Software Engineer, AI Systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+/* ============ TOKENS ============ */
+:root{
+  color-scheme: light;
+  --paper: #E9EEF2;
+  --paper-deep: #DEE7EC;
+  --panel: #F7F9FA;
+  --panel-warm: #FFFFFF;
+  --line: #C7D3DB;
+  --line-strong: #9FB2BE;
+  --ink: #17233A;
+  --ink-soft: #52637A;
+  --ink-faint: #8497A8;
+  --accent: #B23A2E;
+  --accent-soft: rgba(178,58,46,.08);
+  --accent-line: rgba(178,58,46,.4);
+  --signal: #2C6E63;
+  --signal-soft: rgba(44,110,99,.09);
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+*,*::before,*::after{ margin:0; padding:0; box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+/* subtle drafting grid, fixed behind everything */
+.grid-layer{
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 44px 44px;
+  opacity: .45;
+  mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, black 40%, transparent 90%);
+}
+
+.wrap{ max-width: 1080px; margin: 0 auto; padding: 0 32px; position:relative; z-index:1; }
+
+a{ color: inherit; }
+ul{ list-style:none; }
+img,svg{ display:block; max-width:100%; }
+
+/* ============ CORNER BRACKET MOTIF ============ */
+.bracket{ position:relative; }
+.bracket::before,
+.bracket::after{
+  content:''; position:absolute; width:16px; height:16px;
+  border-color: var(--line-strong); border-style: solid; border-width:0;
+  pointer-events:none;
+}
+.bracket::before{ top:-1px; left:-1px; border-top-width:2px; border-left-width:2px; }
+.bracket::after{ bottom:-1px; right:-1px; border-bottom-width:2px; border-right-width:2px; }
+
+/* ============ NAV ============ */
+nav{
+  position: fixed; top:0; left:0; width:100%; z-index: 200;
+  border-bottom: 1px solid transparent;
+  transition: background .25s ease, border-color .25s ease;
+}
+nav.scrolled{
+  background: rgba(233,238,242,.92);
+  backdrop-filter: blur(10px);
+  border-bottom-color: var(--line);
+}
+.nav-inner{
+  max-width: 1080px; margin:0 auto; padding: 18px 32px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.brand{
+  font-family: var(--font-display); font-weight:700; font-size:16px;
+  text-decoration:none; letter-spacing:-.2px; display:flex; align-items:baseline; gap:8px;
+}
+.brand-mark{
+  font-family: var(--font-mono); font-size:10.5px; font-weight:500;
+  color: var(--ink-faint); letter-spacing: 1.5px; text-transform:uppercase;
+}
+.nav-links{ display:flex; align-items:center; gap:30px; }
+.nav-links a{
+  font-family: var(--font-mono); font-size:12.5px; font-weight:500;
+  text-decoration:none; color: var(--ink-soft); letter-spacing:.4px;
+  text-transform: uppercase; position:relative; padding-bottom:3px;
+  transition: color .2s;
+}
+.nav-links a::after{
+  content:''; position:absolute; left:0; bottom:0; width:0; height:1.5px;
+  background: var(--accent); transition: width .25s;
+}
+.nav-links a:hover{ color: var(--ink); }
+.nav-links a:hover::after{ width:100%; }
+
+.menu-toggle{ display:none; }
+.menu-btn{ display:none; }
+
+@media (max-width: 780px){
+  .menu-btn{
+    display:flex; flex-direction:column; justify-content:center; gap:5px;
+    width:34px; height:34px; cursor:pointer; z-index:210;
+  }
+  .menu-btn span{ display:block; width:22px; height:2px; background: var(--ink); }
+  .nav-links{
+    position: fixed; top:0; right:-78%; width:78%; max-width:320px; height:100vh;
+    background: var(--panel); border-left:1px solid var(--line);
+    flex-direction:column; align-items:flex-start; justify-content:flex-start;
+    padding: 90px 32px; gap:26px; transition: right .3s ease;
+  }
+  .menu-toggle:checked ~ .nav-links{ right:0; }
+}
+
+/* ============ HERO ============ */
+#top{ padding-top: 128px; padding-bottom: 40px; position:relative; z-index:1; }
+
+.eyebrow{
+  font-family: var(--font-mono); font-size:11.5px; font-weight:500;
+  color: var(--accent); letter-spacing: 2px; text-transform:uppercase;
+  display:inline-flex; align-items:center; gap:9px; margin-bottom:22px;
+}
+.eyebrow::before{ content:''; width:26px; height:1px; background: var(--accent); }
+
+.hero-grid{
+  display:grid; grid-template-columns: 1.1fr .9fr; gap: 56px; align-items:start;
+}
+
+h1.title{
+  font-family: var(--font-display); font-weight:700;
+  font-size: clamp(42px, 6vw, 64px); letter-spacing:-1.5px; line-height:1.02;
+  margin-bottom: 14px; color: var(--ink);
+}
+.role-line{
+  font-family: var(--font-mono); font-size: 15px; color: var(--ink-soft);
+  font-weight:500; margin-bottom: 26px; letter-spacing:.2px;
+}
+.role-line b{ color: var(--signal); font-weight:600; }
+
+.hero-desc{
+  font-size: 16.5px; color: var(--ink-soft); max-width: 520px;
+  line-height: 1.8; margin-bottom: 28px;
+}
+
+.status{
+  display:inline-flex; align-items:center; gap:9px;
+  font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft);
+  letter-spacing:.3px; margin-bottom: 32px;
+}
+.status-dot{
+  width:8px; height:8px; border-radius:50%; background: var(--signal);
+  box-shadow: 0 0 0 0 rgba(44,110,99,.5);
+  animation: pulse 2.2s infinite;
+}
+@keyframes pulse{
+  0%{ box-shadow: 0 0 0 0 rgba(44,110,99,.45); }
+  70%{ box-shadow: 0 0 0 9px rgba(44,110,99,0); }
+  100%{ box-shadow: 0 0 0 0 rgba(44,110,99,0); }
+}
+
+.hero-cta{ display:flex; flex-wrap:wrap; gap:12px; }
+.btn{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family: var(--font-mono); font-size:12.5px; font-weight:600;
+  letter-spacing:.4px; text-transform:uppercase;
+  padding: 13px 22px; text-decoration:none; border-radius:2px;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease, color .18s ease;
+  border: 1.5px solid var(--ink);
+}
+.btn-solid{ background: var(--ink); color: var(--panel); }
+.btn-solid:hover{ transform: translateY(-2px); box-shadow: 3px 4px 0 var(--accent); }
+.btn-line{ background: transparent; color: var(--ink); border-color: var(--line-strong); }
+.btn-line:hover{ border-color: var(--ink); transform: translateY(-2px); }
+
+/* pipeline diagram */
+.diagram-frame{
+  position: relative;
+}
+.pipeline-svg{ width:100%; height:auto; display:block; }
+
+/* ============ TITLE BLOCK STRIP ============ */
+.strip{
+  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  margin-top: 56px;
+}
+.strip-grid{
+  display:grid; grid-template-columns: repeat(5, 1fr);
+}
+.strip-cell{
+  padding: 18px 24px; border-left: 1px solid var(--line);
+}
+.strip-cell:first-child{ border-left: none; padding-left: 0; }
+.strip-label{
+  font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint);
+  letter-spacing: 1.4px; text-transform:uppercase; margin-bottom: 6px;
+}
+.strip-value{
+  font-family: var(--font-display); font-size: 16px; font-weight:600; color: var(--ink);
+  letter-spacing:-.2px;
+}
+
+/* ============ SECTION BASE ============ */
+.section{ padding: 96px 0; position:relative; z-index:1; }
+.section-panel{ background: var(--panel); }
+.section-head{ margin-bottom: 52px; }
+.sheet-tag{
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint);
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px;
+  display:flex; align-items:center; gap:10px;
+}
+.sheet-tag::before{ content:''; width:20px; height:1px; background: var(--line-strong); }
+h2.section-title{
+  font-family: var(--font-display); font-weight:700;
+  font-size: clamp(28px, 3.6vw, 36px); letter-spacing:-1px; color: var(--ink);
+}
+
+/* ============ ABOUT ============ */
+.about-grid{ display:grid; grid-template-columns: 1.3fr .9fr; gap: 60px; align-items:start; }
+.about-text p{ font-size: 15.5px; color: var(--ink-soft); line-height:1.85; margin-bottom:20px; }
+.about-text p strong{ color: var(--ink); font-weight:600; }
+
+.spec-panel{
+  background: var(--panel-warm); border:1px solid var(--line); padding: 30px 30px;
+}
+.spec-panel .sheet-tag{ margin-bottom: 18px; }
+.spec-row{
+  display:flex; justify-content:space-between; gap:16px;
+  padding: 13px 0; border-top: 1px solid var(--line);
+  font-size: 13.5px;
+}
+.spec-row:first-of-type{ border-top:none; }
+.spec-field{
+  font-family: var(--font-mono); color: var(--ink-faint); letter-spacing:.3px;
+  flex-shrink:0;
+}
+.spec-value{ color: var(--ink); font-weight:500; text-align:right; }
+
+/* ============ SKILLS ============ */
+.module-grid{
+  display:grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 22px;
+}
+.module{
+  background: var(--panel-warm); border: 1px solid var(--line);
+  padding: 26px 26px 24px; position:relative;
+}
+.module-id{
+  font-family: var(--font-mono); font-size: 10.5px; color: var(--signal);
+  font-weight:600; letter-spacing:2px; text-transform:uppercase; margin-bottom:6px;
+}
+.module-name{
+  font-family: var(--font-display); font-weight:600; font-size:16px; margin-bottom:16px;
+}
+.chip-row{ display:flex; flex-wrap:wrap; gap:7px; }
+.chip{
+  font-family: var(--font-mono); font-size:11.5px; color: var(--ink-soft);
+  border: 1px solid var(--line); padding: 5px 10px; font-weight:500;
+}
+
+/* ============ WORK / PROJECTS ============ */
+.sheet-list{ display:flex; flex-direction:column; gap: 22px; }
+.work-sheet{
+  background: var(--panel-warm); border: 1px solid var(--line); padding: 34px 36px;
+}
+.work-head{
+  display:flex; justify-content:space-between; align-items:flex-start; gap:24px;
+  flex-wrap:wrap; margin-bottom:16px;
+}
+.work-num{
+  font-family: var(--font-mono); font-size: 11px; color: var(--ink-faint);
+  letter-spacing:1.5px; margin-bottom:8px;
+}
+.work-name{ font-family: var(--font-display); font-weight:700; font-size: 21px; letter-spacing:-.4px; }
+.work-date{
+  font-family: var(--font-mono); font-size: 12px; color: var(--ink-faint);
+  white-space:nowrap; padding-top: 4px;
+}
+.work-body{ font-size: 14.5px; color: var(--ink-soft); line-height:1.8; max-width:640px; margin-bottom:22px; }
+.work-foot{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+.stack-row{ display:flex; flex-wrap:wrap; gap:7px; }
+.stack-chip{
+  font-family: var(--font-mono); font-size:11px; color: var(--signal);
+  background: var(--signal-soft); border:1px solid rgba(44,110,99,.22);
+  padding: 4px 9px; font-weight:600;
+}
+.link-row{ display:flex; gap:10px; flex-wrap:wrap; }
+.work-link{
+  display:inline-flex; align-items:center; gap:6px;
+  font-family: var(--font-mono); font-size:11.5px; font-weight:600;
+  text-decoration:none; padding: 8px 14px; letter-spacing:.3px;
+  border: 1.5px solid var(--ink); color: var(--ink); transition: all .18s;
+}
+.work-link:hover{ background: var(--ink); color: var(--panel-warm); }
+.work-link.primary{ background: var(--accent); border-color: var(--accent); color:#fff; }
+.work-link.primary:hover{ background: #96301F; border-color:#96301F; }
+
+/* ============ ADDITIONAL BUILDS ============ */
+.extra-head{
+  display:flex; align-items:baseline; justify-content:space-between; gap:16px;
+  margin: 44px 0 18px; padding-top: 30px; border-top: 1px solid var(--line);
+  flex-wrap:wrap;
+}
+.extra-head .sheet-tag{ margin-bottom:0; }
+.extra-note{ font-family: var(--font-mono); font-size:11.5px; color: var(--ink-faint); }
+.extra-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 18px; }
+.extra-card{ background: var(--panel-warm); border:1px solid var(--line); padding: 22px 24px; }
+.extra-name{ font-family: var(--font-display); font-weight:700; font-size: 15.5px; margin-bottom:8px; letter-spacing:-.2px; }
+.extra-body{ font-size: 13px; color: var(--ink-soft); line-height:1.7; margin-bottom:16px; }
+.extra-foot{ display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.extra-stack{ font-family: var(--font-mono); font-size:10.5px; color: var(--ink-faint); letter-spacing:.3px; }
+.extra-link{
+  font-family: var(--font-mono); font-size:11px; font-weight:600; text-decoration:none;
+  color: var(--ink); border-bottom: 1.5px solid var(--line-strong); padding-bottom:1px; transition: border-color .18s;
+}
+.extra-link:hover{ border-color: var(--accent); color: var(--accent); }
+
+/* ============ EXPERIENCE / REVISION LOG ============ */
+.log{ display:flex; flex-direction:column; }
+.log-row{
+  display:grid; grid-template-columns: 90px 190px 1fr; gap: 26px;
+  padding: 32px 0; border-top: 1px solid var(--line);
+}
+.log:last-child .log-row:last-child{ border-bottom: 1px solid var(--line); }
+.log-rev{ font-family: var(--font-mono); font-size: 26px; font-weight:600; color: var(--line-strong); }
+.log-date{ font-family: var(--font-mono); font-size: 12px; color: var(--ink-faint); padding-top:6px; }
+.log-role{ font-family: var(--font-display); font-weight:700; font-size:17px; margin-bottom:3px; }
+.log-org{ font-size: 13px; color: var(--signal); font-weight:600; margin-bottom:14px; }
+.log-points{ display:flex; flex-direction:column; gap:8px; }
+.log-points li{
+  font-size: 13.8px; color: var(--ink-soft); line-height:1.65; padding-left:16px; position:relative;
+}
+.log-points li::before{
+  content:''; position:absolute; left:0; top:9px; width:6px; height:1.5px; background: var(--accent);
+}
+
+/* ============ EDUCATION ============ */
+.edu-grid{
+  display:grid; grid-template-columns: 1.2fr .8fr; gap: 48px; align-items:center;
+  background: var(--panel-warm); border:1px solid var(--line); padding: 44px 46px;
+}
+.edu-school{ font-family: var(--font-display); font-weight:700; font-size:24px; letter-spacing:-.4px; margin-bottom:4px; }
+.edu-degree{ font-size:14.5px; color: var(--signal); font-weight:600; margin-bottom:18px; }
+.edu-list{ display:flex; flex-direction:column; gap:11px; margin-bottom:6px; }
+.edu-list li{ font-size:13.8px; color: var(--ink-soft); display:flex; gap:10px; }
+.edu-list li b{ color:var(--ink); font-weight:600; min-width:130px; font-family:var(--font-mono); font-size:12px; letter-spacing:.2px; padding-top:1px;}
+
+.gauge-wrap{ display:flex; flex-direction:column; align-items:center; }
+.gauge-value{ font-family: var(--font-display); font-size:15px; margin-top:14px; color:var(--ink); font-weight:600; }
+.gauge-label{ font-family: var(--font-mono); font-size:10.5px; color:var(--ink-faint); letter-spacing:1.5px; text-transform:uppercase; margin-top:3px; }
+
+/* ============ CONTACT ============ */
+#contact{ text-align:center; }
+.stamp{
+  width: 86px; height:86px; border-radius:50%; border: 2px solid var(--accent);
+  display:flex; align-items:center; justify-content:center; margin: 0 auto 30px;
+  transform: rotate(-8deg);
+}
+.stamp span{
+  font-family: var(--font-mono); font-size:10px; font-weight:700; color: var(--accent);
+  letter-spacing:1.5px; text-align:center; line-height:1.5;
+}
+.contact-wrap{ max-width: 600px; margin:0 auto; }
+.contact-wrap p{ font-size:15.5px; color: var(--ink-soft); line-height:1.75; margin: 18px auto 40px; max-width:460px; }
+.contact-grid{ display:flex; flex-wrap:wrap; justify-content:center; gap:12px; }
+.contact-card{
+  display:flex; align-items:center; gap:10px;
+  border: 1.5px solid var(--line-strong); padding: 14px 22px;
+  text-decoration:none; color: var(--ink); font-family: var(--font-mono);
+  font-size:12.5px; font-weight:600; transition: all .2s;
+}
+.contact-card:hover{ background: var(--ink); color: var(--panel-warm); border-color: var(--ink); }
+
+/* ============ FOOTER ============ */
+footer{
+  border-top: 1px solid var(--line); padding: 30px 0; text-align:center; position:relative; z-index:1;
+}
+footer p{
+  font-family: var(--font-mono); font-size: 11.5px; color: var(--ink-faint); letter-spacing:.3px;
+}
+
+/* ============ REVEAL ============ */
+.reveal{ opacity:0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.visible{ opacity:1; transform:none; }
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  .reveal{ opacity:1; transform:none; transition:none; }
+  .status-dot{ animation:none; }
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px){
+  .hero-grid{ grid-template-columns: 1fr; }
+  .about-grid{ grid-template-columns: 1fr; }
+  .edu-grid{ grid-template-columns: 1fr; }
+  .strip-grid{ grid-template-columns: repeat(2, 1fr); }
+  .strip-cell:nth-child(3){ border-left:none; }
+  .strip-cell{ border-bottom: 1px solid var(--line); padding-bottom:16px; }
+}
+@media (max-width: 620px){
+  .wrap{ padding: 0 20px; }
+  .nav-inner{ padding: 16px 20px; }
+  .strip-grid{ grid-template-columns: 1fr 1fr; }
+  .log-row{ grid-template-columns: 1fr; gap:8px; }
+  .log-rev{ font-size:18px; }
+  .work-head{ flex-direction:column; }
+  .edu-grid{ padding: 30px 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="grid-layer"></div>
+
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#top" class="brand">Ali Jabbar <span class="brand-mark">AI Systems</span></a>
+    <input type="checkbox" id="menuToggle" class="menu-toggle">
+    <label for="menuToggle" class="menu-btn" aria-label="Toggle menu"><span></span><span></span><span></span></label>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section id="top">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow reveal">Sheet 00, Overview</div>
+        <h1 class="title reveal">Ali Jabbar</h1>
+        <div class="role-line reveal">Software Engineer · AI Systems Engineer · Full-Stack Engineer — <b>Deep Learning · LLMs · Generative AI · RAG · Agentic AI</b></div>
+        <p class="hero-desc reveal">
+          I build the parts of AI systems that have to keep working after the demo ends: pipelines that don't fall over, agents that call the right tool at the right moment, and models that hold up outside a notebook. I'm finishing a Computer Science degree in Lahore, and most of what I know I learned by taking something apart until I understood why it worked.
+        </p>
+        <div class="status reveal">
+          <span class="status-dot"></span>
+          Open to full time roles, internships, and collaborations
+        </div>
+        <div class="hero-cta reveal">
+          <a href="#work" class="btn btn-solid">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            View the work
+          </a>
+          <a href="Ali-Jabbar-Resume.pdf" download class="btn btn-line">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Resume
+          </a>
+          <a href="mailto:alijabbarx@gmail.com" class="btn btn-line">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            Say hello
+          </a>
+        </div>
+      </div>
+
+      <div class="diagram-frame reveal">
+        <svg class="pipeline-svg" viewBox="0 0 460 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="pipeTitle pipeDesc">
+          <title id="pipeTitle">Diagram of an applied LLM pipeline</title>
+          <desc id="pipeDesc">Data flows into a model, then into an agent layer with guarded tool calls, then into deployment.</desc>
+          <style>
+            .frame{ fill:none; stroke:var(--line-strong); stroke-width:1; }
+            .reg{ stroke:var(--line-strong); stroke-width:1; }
+            .node-rect{ fill:var(--panel-warm); stroke:var(--ink); stroke-width:1.6; }
+            .tick{ stroke:var(--ink); stroke-width:1.2; }
+            .connector{ stroke:var(--ink-soft); stroke-width:1.4; stroke-dasharray:4 5; }
+            .node-label{ font-family:var(--font-mono); font-size:14.5px; font-weight:600; fill:var(--ink); letter-spacing:1px; }
+            .node-sub{ font-family:var(--font-body); font-size:11px; fill:var(--ink-soft); }
+            .node-num{ font-family:var(--font-mono); font-size:10px; fill:var(--ink-faint); letter-spacing:1px; }
+            .annot{ font-family:var(--font-mono); font-size:10px; fill:var(--ink-faint); letter-spacing:1px; }
+          </style>
+
+          <rect class="frame" x="2" y="2" width="456" height="496"/>
+          <g class="reg">
+            <line x1="0" y1="10" x2="12" y2="10"/><line x1="6" y1="4" x2="6" y2="16"/>
+            <line x1="448" y1="10" x2="460" y2="10"/><line x1="454" y1="4" x2="454" y2="16"/>
+            <line x1="0" y1="490" x2="12" y2="490"/><line x1="6" y1="484" x2="6" y2="496"/>
+            <line x1="448" y1="490" x2="460" y2="490"/><line x1="454" y1="484" x2="454" y2="496"/>
+          </g>
+
+          <text class="annot" x="300" y="22">FIG 1, INFERENCE PIPELINE</text>
+          <text class="annot" x="300" y="36">SCHEMATIC, NOT TO SCALE</text>
+
+          <!-- Node 1: DATA -->
+          <rect class="node-rect" x="40" y="34" width="250" height="64"/>
+          <g class="tick">
+            <line x1="34" y1="34" x2="40" y2="34"/><line x1="40" y1="28" x2="40" y2="34"/>
+            <line x1="290" y1="98" x2="296" y2="98"/><line x1="290" y1="98" x2="290" y2="104"/>
+          </g>
+          <circle cx="40" cy="34" r="3.5" fill="var(--accent)"/>
+          <text class="node-num" x="270" y="48">01</text>
+          <text class="node-label" x="58" y="62">DATA</text>
+          <text class="node-sub" x="58" y="82">prompts, documents, tables</text>
+
+          <line class="connector" x1="165" y1="98" x2="165" y2="144"/>
+
+          <!-- Node 2: MODEL -->
+          <rect class="node-rect" x="40" y="144" width="250" height="64"/>
+          <g class="tick">
+            <line x1="34" y1="144" x2="40" y2="144"/><line x1="40" y1="138" x2="40" y2="144"/>
+            <line x1="290" y1="208" x2="296" y2="208"/><line x1="290" y1="208" x2="290" y2="214"/>
+          </g>
+          <text class="node-num" x="270" y="158">02</text>
+          <text class="node-label" x="58" y="172">MODEL</text>
+          <text class="node-sub" x="58" y="192">LLM reasoning and retrieval</text>
+
+          <line class="connector" x1="165" y1="208" x2="165" y2="254"/>
+
+          <!-- Node 3: AGENT / TOOLS -->
+          <rect class="node-rect" x="40" y="254" width="250" height="64"/>
+          <g class="tick">
+            <line x1="34" y1="254" x2="40" y2="254"/><line x1="40" y1="248" x2="40" y2="254"/>
+            <line x1="290" y1="318" x2="296" y2="318"/><line x1="290" y1="318" x2="290" y2="324"/>
+          </g>
+          <text class="node-num" x="270" y="268">03</text>
+          <text class="node-label" x="58" y="282">AGENT / TOOLS</text>
+          <text class="node-sub" x="58" y="302">MCP tool calls, guardrails</text>
+
+          <line class="connector" x1="165" y1="318" x2="165" y2="364"/>
+
+          <!-- Node 4: DEPLOYMENT -->
+          <rect class="node-rect" x="40" y="364" width="250" height="64"/>
+          <g class="tick">
+            <line x1="34" y1="364" x2="40" y2="364"/><line x1="40" y1="358" x2="40" y2="364"/>
+            <line x1="290" y1="428" x2="296" y2="428"/><line x1="290" y1="428" x2="290" y2="434"/>
+          </g>
+          <text class="node-num" x="270" y="378">04</text>
+          <text class="node-label" x="58" y="392">DEPLOYMENT</text>
+          <text class="node-sub" x="58" y="412">APIs, dashboards, cron jobs</text>
+
+          <text class="annot" x="40" y="470">SHEET 00</text>
+          <text class="annot" x="330" y="470">REV 2026.08</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="strip reveal">
+      <div class="strip-grid">
+        <div class="strip-cell">
+          <div class="strip-label">Candidate</div>
+          <div class="strip-value">Ali Jabbar</div>
+        </div>
+        <div class="strip-cell">
+          <div class="strip-label">Location</div>
+          <div class="strip-value">Lahore, Pakistan</div>
+        </div>
+        <div class="strip-cell">
+          <div class="strip-label">Graduating</div>
+          <div class="strip-value">July 2026</div>
+        </div>
+        <div class="strip-cell">
+          <div class="strip-label">CGPA</div>
+          <div class="strip-value">3.93 / 4.00</div>
+        </div>
+        <div class="strip-cell">
+          <div class="strip-label">Certification</div>
+          <div class="strip-value">AWS Cloud</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="section section-panel">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="sheet-tag reveal">Sheet 01, About</div>
+      <h2 class="section-title reveal">How I got here</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>
+          I got into machine learning by refusing to trust it. Before I'd use a library function, I wanted to know what it was actually doing underneath, so I wrote backpropagation by hand in NumPy just to watch the gradients move. That habit never really left. I still want to see the gears turning before I let a system run on its own.
+        </p>
+        <p>
+          Most of my recent work sits at the point where a language model stops being a chatbot and starts being infrastructure: connecting Claude to a real database through the Model Context Protocol, building retrieval and tool calling workflows, and adding the kind of validation that keeps a good demo from becoming a bad incident. I care about clean architecture just as much as I care about the model working, because one without the other rarely ships.
+        </p>
+        <p>
+          I'm currently finishing my <strong>Bachelor's in Computer Science at the University of Central Punjab</strong> in Lahore, on a full merit scholarship. Outside of coursework, I've spent a good deal of time as a teaching assistant explaining polymorphism to sophomores, and as a founding member of our university's IEEE Robotics and Automation Society chapter, helping get it off the ground.
+        </p>
+      </div>
+      <div class="spec-panel reveal bracket">
+        <div class="sheet-tag" style="margin-bottom:18px;">Specification</div>
+        <div class="spec-row"><span class="spec-field">ROLE</span><span class="spec-value">Software Engineer, AI Systems Engineer, Full-Stack Engineer</span></div>
+        <div class="spec-row"><span class="spec-field">FOCUS</span><span class="spec-value">Deep Learning, LLMs, Generative AI, RAG, Agentic AI</span></div>
+        <div class="spec-row"><span class="spec-field">BASED IN</span><span class="spec-value">Lahore, Pakistan</span></div>
+        <div class="spec-row"><span class="spec-field">EDUCATION</span><span class="spec-value">BSCS, UCP Lahore</span></div>
+        <div class="spec-row"><span class="spec-field">LANGUAGES</span><span class="spec-value">English, Urdu, Arabic</span></div>
+        <div class="spec-row"><span class="spec-field">OPEN TO</span><span class="spec-value">Full time, internships</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SKILLS ============ -->
+<section id="skills" class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="sheet-tag reveal">Sheet 02, Toolkit</div>
+      <h2 class="section-title reveal">What I build with</h2>
+    </div>
+    <div class="module-grid">
+      <div class="module reveal bracket">
+        <div class="module-id">Module A</div>
+        <div class="module-name">Languages</div>
+        <div class="chip-row">
+          <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">C / C++</span>
+          <span class="chip">Java</span><span class="chip">JavaScript</span>
+        </div>
+      </div>
+      <div class="module reveal bracket">
+        <div class="module-id">Module B</div>
+        <div class="module-name">Machine Learning & Data</div>
+        <div class="chip-row">
+          <span class="chip">Deep Learning</span><span class="chip">NLP</span><span class="chip">Scikit-learn</span>
+          <span class="chip">TensorFlow / Keras</span><span class="chip">NumPy</span><span class="chip">Pandas</span>
+        </div>
+      </div>
+      <div class="module reveal bracket">
+        <div class="module-id">Module C</div>
+        <div class="module-name">Generative AI & Agents</div>
+        <div class="chip-row">
+          <span class="chip">LLMs</span><span class="chip">Prompt Engineering</span><span class="chip">RAG</span>
+          <span class="chip">Claude API</span><span class="chip">Claude Code</span><span class="chip">MCP</span>
+          <span class="chip">FastMCP</span><span class="chip">Pydantic v2</span>
+        </div>
+      </div>
+      <div class="module reveal bracket">
+        <div class="module-id">Module D</div>
+        <div class="module-name">Tools & Cloud</div>
+        <div class="chip-row">
+          <span class="chip">AWS</span><span class="chip">Docker</span><span class="chip">Git / GitHub</span>
+          <span class="chip">Streamlit</span><span class="chip">Flask</span><span class="chip">SQLite</span>
+          <span class="chip">Hadoop / Spark</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WORK ============ -->
+<section id="work" class="section section-panel">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="sheet-tag reveal">Sheet 03, Project set</div>
+      <h2 class="section-title reveal">Selected work</h2>
+    </div>
+    <div class="sheet-list">
+
+      <div class="work-sheet reveal">
+        <div class="work-head">
+          <div>
+            <div class="work-num">SHEET 03.1 OF 6</div>
+            <div class="work-name">IMDb MCP Server</div>
+          </div>
+          <div class="work-date">June 2026</div>
+        </div>
+        <p class="work-body">
+          An MCP server that lets Claude query a live movie database using plain English instead of SQL. I used FastMCP to expose the tools, Pydantic v2 to validate every input, and a guard that restricts the model to read only SELECT statements, so a stray prompt can't accidentally write to the database. It's the clearest example I have of prompt engineered tool design meeting real world caution.
+        </p>
+        <div class="work-foot">
+          <div class="stack-row">
+            <span class="stack-chip">Python</span><span class="stack-chip">FastMCP</span>
+            <span class="stack-chip">SQLite</span><span class="stack-chip">Pydantic v2</span>
+            <span class="stack-chip">Claude API</span>
+          </div>
+          <div class="link-row">
+            <a href="https://github.com/Ali-Debugs/imdb-mcp-server" target="_blank" class="work-link">Repository</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="work-sheet reveal">
+        <div class="work-head">
+          <div>
+            <div class="work-num">SHEET 03.2 OF 6</div>
+            <div class="work-name">Neural Machine Translation from Scratch</div>
+          </div>
+          <div class="work-date">2026</div>
+        </div>
+        <p class="work-body">
+          An encoder-decoder translation model built with nothing but NumPy: manual forward propagation, an attention mechanism with explicit alignment weights, and backpropagation through time written out by hand instead of left to autograd. I built it to answer questions frameworks usually hide, like how a sentence gets compressed into a vector and why attention exists to fix that bottleneck. It's the closest thing I have to a from-scratch look at what an LLM's building blocks are actually doing.
+        </p>
+        <div class="work-foot">
+          <div class="stack-row">
+            <span class="stack-chip">Python</span><span class="stack-chip">NumPy</span>
+            <span class="stack-chip">Attention Mechanisms</span><span class="stack-chip">Sequence Models</span>
+          </div>
+          <div class="link-row">
+            <a href="https://github.com/Ali-Debugs/Encoder-Decoder-From-Scratch" target="_blank" class="work-link">Repository</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="work-sheet reveal">
+        <div class="work-head">
+          <div>
+            <div class="work-num">SHEET 03.3 OF 6</div>
+            <div class="work-name">Tajir Demand Forecaster</div>
+          </div>
+          <div class="work-date">March 2026</div>
+        </div>
+        <p class="work-body">
+          A demand forecasting tool for small retailers, built after cleaning and engineering features from more than nine thousand sales records. It runs on Ridge Regression to forecast the next seven days of demand, sits behind a Streamlit dashboard with a live SQL analytics layer, and includes a delivery consolidation simulator that estimates the fuel and carbon savings of combining routes.
+        </p>
+        <div class="work-foot">
+          <div class="stack-row">
+            <span class="stack-chip">Python</span><span class="stack-chip">Scikit-learn</span>
+            <span class="stack-chip">SQL</span><span class="stack-chip">Streamlit</span>
+            <span class="stack-chip">AWS</span>
+          </div>
+          <div class="link-row">
+            <a href="https://tajir-demand-forecaster.streamlit.app" target="_blank" class="work-link primary">Live demo</a>
+            <a href="https://github.com/Ali-Debugs/tajir-demand-forecaster" target="_blank" class="work-link">Repository</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="work-sheet reveal">
+        <div class="work-head">
+          <div>
+            <div class="work-num">SHEET 03.4 OF 6</div>
+            <div class="work-name">Distributed Cybersecurity Log Analytics Platform</div>
+          </div>
+          <div class="work-date">2026</div>
+        </div>
+        <p class="work-body">
+          A pipeline that runs 2.57 million real network flow records from the CICIDS2017 intrusion dataset through Hadoop HDFS and Apache Spark in pseudo-distributed mode. Five Spark jobs handle attack distribution, suspicious IP detection, brute force analysis, and traffic pattern mining across fifteen attack types, with results served on a Streamlit dashboard. A university PDC project, but a real distributed systems build rather than a toy one.
+        </p>
+        <div class="work-foot">
+          <div class="stack-row">
+            <span class="stack-chip">Hadoop HDFS</span><span class="stack-chip">Apache Spark</span>
+            <span class="stack-chip">Python</span><span class="stack-chip">Streamlit</span>
+          </div>
+          <div class="link-row">
+            <a href="https://github.com/Ali-Debugs/cybersecurity-analytics" target="_blank" class="work-link">Repository</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="work-sheet reveal">
+        <div class="work-head">
+          <div>
+            <div class="work-num">SHEET 03.5 OF 6</div>
+            <div class="work-name">Deep Learning Model from Scratch</div>
+          </div>
+          <div class="work-date">January 2026</div>
+        </div>
+        <p class="work-body">
+          A neural network built with nothing but NumPy, trained to classify diabetes risk from eight clinical indicators in the CDC's BRFSS2015 dataset. I wrote forward propagation, backpropagation, and gradient descent by hand at the matrix level, mostly to prove to myself that I actually understood what a framework like TensorFlow is doing under the hood.
+        </p>
+        <div class="work-foot">
+          <div class="stack-row">
+            <span class="stack-chip">Python</span><span class="stack-chip">NumPy</span>
+            <span class="stack-chip">Deep Learning</span><span class="stack-chip">Predictive Analytics</span>
+          </div>
+          <div class="link-row">
+            <a href="https://github.com/Ali-Debugs/ANN-From-Scratch" target="_blank" class="work-link">Repository</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="work-sheet reveal">
+        <div class="work-head">
+          <div>
+            <div class="work-num">SHEET 03.6 OF 6</div>
+            <div class="work-name">Language Detector using Machine Learning</div>
+          </div>
+          <div class="work-date">November 2024</div>
+        </div>
+        <p class="work-body">
+          A text classifier that identifies language from short snippets, comparing a Naive Bayes model against a neural network trained on character level TF-IDF features. The neural network came out ahead at 98.57 percent test accuracy, and I deployed the final model as a real time REST API with Flask.
+        </p>
+        <div class="work-foot">
+          <div class="stack-row">
+            <span class="stack-chip">Python</span><span class="stack-chip">Flask</span>
+            <span class="stack-chip">Scikit-learn</span><span class="stack-chip">TensorFlow / Keras</span>
+            <span class="stack-chip">NLP</span>
+          </div>
+          <div class="link-row">
+            <a href="https://github.com/Ali-Debugs/Language-Detector-ML" target="_blank" class="work-link">Repository</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="extra-head reveal">
+      <div class="sheet-tag">Sheet 03, Addendum</div>
+      <div class="extra-note">Smaller builds, still shipped</div>
+    </div>
+    <div class="extra-grid">
+      <div class="extra-card reveal">
+        <div class="extra-name">Custom Compiler Front End</div>
+        <p class="extra-body">
+          A lexer and parser for a small Harry Potter themed language, built with Flex and Bison. The lexer tokenizes custom keywords, numbers, and strings with line level error reporting; the parser handles functions, struct-like "houses," loops, and expressions with detailed syntax errors.
+        </p>
+        <div class="extra-foot">
+          <span class="extra-stack">C · Flex · Bison</span>
+          <span>
+            <a href="https://github.com/Ali-Debugs/Custom-Syntax-Parser" target="_blank" class="extra-link">Parser</a>
+            &nbsp;·&nbsp;
+            <a href="https://github.com/Ali-Debugs/Custom-Lexical-Analyzer" target="_blank" class="extra-link">Lexer</a>
+          </span>
+        </div>
+      </div>
+      <div class="extra-card reveal">
+        <div class="extra-name">Movie Recommendation System</div>
+        <p class="extra-body">
+          A content based recommender using TF-IDF vectorization and cosine similarity over movie overviews, genres, and keywords, served through a React (Vite) frontend. No user history required, which sidesteps the cold-start problem by design.
+        </p>
+        <div class="extra-foot">
+          <span class="extra-stack">Python · Scikit-learn · React</span>
+          <a href="https://github.com/Ali-Debugs/Movie-Recommendation-System" target="_blank" class="extra-link">Repository</a>
+        </div>
+      </div>
+      <div class="extra-card reveal">
+        <div class="extra-name">HCV Treatment Response Prediction</div>
+        <p class="extra-body">
+          A deep learning notebook predicting sustained virological response in Hepatitis C patients from clinical indicators, an early exploration of ML assisted treatment screening.
+        </p>
+        <div class="extra-foot">
+          <span class="extra-stack">Python · Deep Learning</span>
+          <a href="https://github.com/Ali-Debugs/HCV-SVR-Prediction" target="_blank" class="extra-link">Repository</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXPERIENCE ============ -->
+<section id="experience" class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="sheet-tag reveal">Sheet 04, Revision log</div>
+      <h2 class="section-title reveal">Experience & leadership</h2>
+    </div>
+    <div class="log">
+      <div class="log-row reveal">
+        <div class="log-rev">02</div>
+        <div class="log-date">Oct 2024 to Oct 2025</div>
+        <div>
+          <div class="log-role">Founding Member, IEEE Robotics and Automation Society</div>
+          <div class="log-org">Student Chapter, University of Central Punjab</div>
+          <ul class="log-points">
+            <li>Helped start the chapter and led its early planning, launch, and day to day operations.</li>
+            <li>Organized hackathons, workshops, and technical events to promote student learning.</li>
+            <li>Supported event operations for Tech for Tomorrow 2024 and HITE 2024.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="log-row reveal">
+        <div class="log-rev">01</div>
+        <div class="log-date">Oct 2024 to May 2025</div>
+        <div>
+          <div class="log-role">Teaching Assistant, Object Oriented Programming</div>
+          <div class="log-org">University of Central Punjab</div>
+          <ul class="log-points">
+            <li>Taught inheritance, polymorphism, abstraction, and core design principles to undergraduates.</li>
+            <li>Mentored more than 30 students through weekly code reviews and one on one debugging help.</li>
+            <li>Used recurring mistakes in student submissions to improve future session content.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EDUCATION ============ -->
+<section id="education" class="section section-panel">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="sheet-tag reveal">Sheet 05, Education</div>
+      <h2 class="section-title reveal">Academic record</h2>
+    </div>
+    <div class="edu-grid reveal bracket">
+      <div>
+        <div class="edu-school">University of Central Punjab</div>
+        <div class="edu-degree">Bachelor of Science in Computer Science</div>
+        <ul class="edu-list">
+          <li><b>DURATION</b> October 2022 to July 2026</li>
+          <li><b>LOCATION</b> Lahore, Pakistan</li>
+          <li><b>SCHOLARSHIP</b> 100% Merit Scholarship, full duration</li>
+          <li><b>CERTIFICATION</b> AWS Academy Graduate, Cloud Foundations, 2024 (EC2, S3, cloud architecture)</li>
+        </ul>
+      </div>
+      <div class="gauge-wrap">
+        <svg width="180" height="180" viewBox="0 0 180 180">
+          <circle cx="90" cy="90" r="72" fill="none" stroke="var(--line)" stroke-width="14"/>
+          <circle cx="90" cy="90" r="72" fill="none" stroke="var(--accent)" stroke-width="14"
+                  stroke-linecap="butt" stroke-dasharray="452.4" stroke-dashoffset="7.9"
+                  transform="rotate(-90 90 90)"/>
+          <text x="90" y="84" text-anchor="middle" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="30" fill="var(--ink)">3.93</text>
+          <text x="90" y="106" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--ink-faint)">OUT OF 4.00</text>
+        </svg>
+        <div class="gauge-label">Cumulative GPA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact" class="section">
+  <div class="wrap">
+    <div class="contact-wrap">
+      <div class="stamp reveal">
+        <span>APPROVED<br>FOR<br>CONTACT</span>
+      </div>
+      <div class="sheet-tag reveal" style="justify-content:center;">Sheet 06, Contact</div>
+      <h2 class="section-title reveal">Let's talk</h2>
+      <p class="reveal">
+        I'm looking for full time roles, internships, and interesting collaborations in applied AI and machine learning engineering. If any of the above looks like a fit, reach out below.
+      </p>
+      <div class="contact-grid reveal">
+        <a href="mailto:alijabbarx@gmail.com" class="contact-card">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          alijabbarx@gmail.com
+        </a>
+        <a href="https://www.linkedin.com/in/ali-debugs" target="_blank" class="contact-card">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a href="https://github.com/Ali-Debugs" target="_blank" class="contact-card">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <a href="tel:+923091155551" class="contact-card">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.1a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.28h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6 6l.92-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 17z"/></svg>
+          +92 309 1155551
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Ali Jabbar, Lahore, Pakistan &nbsp;·&nbsp; ali-debugs.github.io &nbsp;·&nbsp; revised August 2026</p>
+</footer>
+
+<script>
+// nav background on scroll
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 30);
+});
+
+// close mobile menu after tapping a link
+const menuToggle = document.getElementById('menuToggle');
+document.querySelectorAll('#navLinks a').forEach(a => {
+  a.addEventListener('click', () => { menuToggle.checked = false; });
+});
+
+// scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+if ('IntersectionObserver' in window) {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => observer.observe(el));
+} else {
+  revealEls.forEach(el => el.classList.add('visible'));
+}
+</script>
+</body>
+</html>
